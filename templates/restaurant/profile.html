@@ -1,0 +1,40 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Профиль{% endblock %}
+
+{% block content %}
+<h2>Ваши избранные блюда</h2>
+<div class="grid-container">
+    {% for fav in favorites %}
+        <div class="grid-item">
+            {% if fav.item.image_name %}
+                <img src="{{ fav.item.image_name.url }}" alt="{{ fav.item.name }}">
+            {% endif %}
+            <h3>{{ fav.item.name }}</h3>
+            <p class="description">{{ fav.item.description }}</p>
+
+            <div class="price-rating-container">
+                <p>Price: {{ fav.item.price }} ₴</p>
+                <p>Raiting: {{ fav.item.rating }} ⭐</p>
+            </div>
+
+            <div class="card-actions">
+                <!-- Убрать из избранного -->
+                <form action="{% url 'remove_from_favorites' fav.item.id %}" method="post">
+                    {% csrf_token %}
+                    <button type="submit" class="btn btn-fav">💔 Убрать из избранного</button>
+                </form>
+
+                <!-- Добавить в корзину -->
+                <form action="{% url 'add_to_cart' fav.item.id %}" method="post">
+                    {% csrf_token %}
+                    <button type="submit" class="btn btn-cart">🛒 В корзину</button>
+                </form>
+            </div>
+        </div>
+    {% empty %}
+        <p>У вас пока нет избранных блюд.</p>
+    {% endfor %}
+</div>
+{% endblock %}

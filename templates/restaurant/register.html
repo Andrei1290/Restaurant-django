@@ -1,0 +1,18 @@
+{% extends 'base.html' %}
+{% block content %}
+<div class="auth-container">
+    <div class="auth-card">
+        <h2>Регистрация</h2>
+
+        <form method="post">
+            {% csrf_token %}
+            {{ form.non_field_errors }}
+            {{ form.username }}
+            {{ form.password1 }}
+            {{ form.password2 }}
+
+            <button type="submit">Зарегистрироваться</button>
+        </form>
+    </div>
+</div>
+{% endblock %}

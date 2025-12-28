@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <title>{% block title %}Restaurant{% endblock %}</title>
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'css/styles.css' %}">
+</head>
+<body>
+    <header>
+        <div class="header-container">
+            <h1>Ресторан</h1>
+            <nav>
+                <a href="{% url 'menu' %}">Меню</a>
+                {% if user.is_authenticated %}
+                    <a href="{% url 'cart' %}">Корзина</a>
+                {% endif %}
+
+                {% if user.is_authenticated %}
+                    <a href="{% url 'profile' %}">{{ user.username }}</a>
+                    <form action="{% url 'logout' %}" method="post" style="display:inline;">
+                        {% csrf_token %}
+                        <button type="submit" style="background:none; border:none; color:white; font-weight:bold; cursor:pointer;">
+                            Выйти
+                        </button>
+                    </form>
+                {% else %}
+                    <a href="{% url 'login' %}">Вход</a>
+                    <a href="{% url 'register' %}">Регистрация</a>
+                {% endif %}
+            </nav>
+        </div>
+    </header>
+    
+    <main>
+        {% block content %}{% endblock %}
+    </main>
+</body>
+</html>

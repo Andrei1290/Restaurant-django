@@ -1,0 +1,67 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Корзина{% endblock %}
+
+{% block content %}
+<h2>Корзина</h2>
+
+{% if cart_items %}
+<table class="cart-table">
+    <thead>
+        <tr>
+            <th>Фото</th>
+            <th>Блюдо</th>
+            <th>Цена</th>
+            <th>Количество</th>
+            <th>Сумма</th>
+            <th>Действия</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for cart_item in cart_items %}
+        <tr>
+            <td>
+                {% if cart_item.item.image_name %}
+                    <img src="{{ cart_item.item.image_name.url }}" alt="{{ cart_item.item.name }}" class="cart-img">
+                {% else %}
+                    Нет фото
+                {% endif %}
+            </td>
+            <td>{{ cart_item.item.name }}</td>
+            <td>{{ cart_item.item.price|floatformat:2 }} ₴</td>
+            <td>
+                <form action="{% url 'decrease_quantity' cart_item.id %}" method="post" style="display:inline;">
+                    {% csrf_token %}
+                    <button type="submit" class="cart-btn">−</button>
+                </form>
+                {{ cart_item.quantity }}
+                <form action="{% url 'increase_quantity' cart_item.id %}" method="post" style="display:inline;">
+                    {% csrf_token %}
+                    <button type="submit" class="cart-btn">+</button>
+                </form>
+            </td>
+            <td>{{ cart_item.total_price|floatformat:2 }} ₴</td>
+            <td>
+                <form action="{% url 'remove_cart_item' cart_item.id %}" method="post" style="display:inline;">
+                    {% csrf_token %}
+                    <button type="submit" class="cart-btn remove-btn">🗑️</button>
+                </form>
+            </td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+<p class="total-price">Итого: <strong>{{ total_price|floatformat:2 }} ₴</strong></p>
+
+{% if cart_items %}
+    <form action="{% url 'checkout' %}" method="get" style="text-align:center; margin-top:10px; text-align: right;">
+        <button type="submit" class="btn btn-cart" style="width:150px;">Оплатить</button>
+    </form>
+{% endif %}
+
+{% else %}
+<p>Ваша корзина пуста 😢</p>
+{% endif %}
+
+{% endblock %}

@@ -1,0 +1,30 @@
+{% extends 'base.html' %}
+
+{% block title %}Оплата{% endblock %}
+
+{% block content %}
+<div class="checkout-modal">
+    <h2>Чек заказа</h2>
+    <div class="checkout-items">
+        {% for ci in cart_items %}
+            <div class="checkout-item">
+                <span>{{ ci.item.name }}</span>
+                <span>{{ ci.item.price }} ₴</span>
+            </div>
+        {% empty %}
+            <p>Ваша корзина пуста.</p>
+        {% endfor %}
+    </div>
+
+    <div class="checkout-total">
+        <strong>Итого: {{ total_price }} ₴</strong>
+    </div>
+
+    {% if cart_items %}
+    <form method="post">
+        {% csrf_token %}
+        <button type="submit" class="btn btn-cart">Оплатить</button>
+    </form>
+    {% endif %}
+</div>
+{% endblock %}

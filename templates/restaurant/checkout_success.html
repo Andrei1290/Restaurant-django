@@ -1,0 +1,11 @@
+{% extends 'base.html' %}
+
+{% block title %}Оплата прошла{% endblock %}
+
+{% block content %}
+<div style="text-align:center; margin-top:50px;">
+    <h2>Спасибо за оплату! 🥳</h2>
+    <p>Ваш заказ успешно оформлен.</p>
+    <a href="{% url 'menu' %}" class="btn btn-cart" style="margin-top:20px;">Вернуться в меню</a>
+</div>
+{% endblock %}
